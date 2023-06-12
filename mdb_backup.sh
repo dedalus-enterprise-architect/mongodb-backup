@@ -65,7 +65,7 @@ MDBCK_DBUSERNAME="admin"
 
 # Password to access the mongo server e.g. password
 # Unnecessary if authentication is off
-MDBCK_DBPASSWORD="x1v1mdb"
+MDBCK_DBPASSWORD="password"
 
 # Database for authentication to the mongo server e.g. admin
 # Unnecessary if authentication is off
@@ -86,7 +86,7 @@ MDBCK_DBPORT="27017"
 MDBCK_DBPORT_TRY_DEFAULT="yes"
 
 # Backup directory location e.g /backups
-MDBCK_BACKUPDIR="/opt/dedalus/mongo/backup"
+MDBCK_BACKUPDIR="/opt/mongo/backup"
 
 # Mail setup
 # What would you like to be mailed to you?
