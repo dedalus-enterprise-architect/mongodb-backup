@@ -1314,10 +1314,10 @@ forcePurgeBckDest() {
           # Delete 1 oldest backup copy
           # ---
           if [ "${_BACKUPDIR_IS_MOUNT_POINT}" = "true" ]; then
-              echo "Primo passo"
+              echo "First step"
               _sizeBackupDir=$( (df ${_BACKUPDIR} --block-size=K | column -t | awk '{print $4}' | tail -1) 2> /dev/null)
           else
-              echo "Secondo passo"
+              echo "Second step"
               _sizeBackupDir=$( (df / --block-size=K | tail -1 | awk '{print $4}') 2> /dev/null)
           fi
           _sizeBackupDir=${_sizeBackupDir%%K*}
