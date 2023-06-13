@@ -1,9 +1,13 @@
-# Description
+# MongoDB backup
+
+## Description
+
 This script allows you to dump full or specific databases using the native mongodump command.
 Furthermore, at each execution, the obsolete backups are deleted, according to the specifications of the specified retention.
 Retention can be specified for TIME-WINDOWS (i.e. time check) or REDUNDANCY (i.e. number of copies).
 
-# Parameters
+## Parameters
+
 Listed below are the parameters that must be entered in order for the script to work.
 
 |Parameter|Type|Default value|Comment|
@@ -36,7 +40,8 @@ This means that the period that is found to be valued first will be the one that
 Therefore, if you want to make a backup of different types in conjunction with two configurations, you will have to make use of a diversified crontab programming and/or use an external parameter file.
 MDBCK_DOMONTHLY also only fires on the first day of each month.
 
-# Optional parameters
+## Optional parameters
+
 Below is the list of optional parameters.
 
 |Parameter|Type|Default value|Comment|
@@ -49,7 +54,8 @@ Below is the list of optional parameters.
 |MDBCK_MAILCONTENT|string|N/A|Identifies where output redirection should occur. It is currently work in progress|
 |MDBCK_MAXATTSIZE|integer|N/A|Identifies the maximum size of the log to be attached to the notification email. It is currently work in progress|
 
-# Advanced parameters
+## Advanced parameters
+
 Below are the parameters that identify the advanced features of the script:
 
 |Parameter|Type|Default value|Comment|
@@ -67,7 +73,7 @@ Below are the parameters that identify the advanced features of the script:
 |MDBCK_PREBACKUP|string|N/A|Identifies a command/script that must be executed before the backup is performed|
 |MDBCK_POSTBACKUP|string|N/A|Identifies a command/script that needs to be executed after the backup is performed|
 
-# Configuring Retention
+## Configuring Retention
 
 The script, is able to verify the number of backups present on disk or, alternatively, the outdated state of the dumps.
 
@@ -80,8 +86,8 @@ if these conditions are met, the backups to be deleted will be identified (if an
 
 The parameters that must be used for retention management are:
 
-MDBCK_<PERIOD>RETENTION_TYPE
-MDBCK_<PERIOD>RETENTION
+- MDBCK_<PERIOD>RETENTION_TYPE
+- MDBCK_<PERIOD>RETENTION
 
 where PERIOD could be HOURLY, DAILY, WEEKLY, MONTHLY and therefore refer to hourly, daily, weekly or monthly backups.
 
@@ -94,13 +100,13 @@ The RETENTION_TYPE can assume, as mentioned above, three values (with indication
 Based on the latter, the script will act by maintaining the most recent N backup copies (in the case of retention = 1) or by deleting the oldest backups of N periods (hours, days, weeks or months) (in the case
 of retention = 2). The number N will be set with the MDBCK_<PERIOD>RETENTION parameter.
   
-# Command line syntax
+## Command line syntax
 
 The script gives the option of accepting parameters as input, listed below:
 
 This command allows to execute the mongodump with retention management.
 
-```
+```text
 
 Usage: mdb_backup.sh <option>
 
@@ -116,11 +122,11 @@ where option should be:
 - --help rather than -? lists the syntax.
 - --test or -t option allows only the check of the parameters without the dump and related accompanying actions being performed. This option is very useful for catching parameter errors, without having to run into error messages or, even more so, inconsistent backups that you would notice later.
   
-# Examples
+## Examples
 
 A. Calling up syntax help:
 
-```
+```text
 $> mdb_backup.sh --help
 
 ************************************************** **
@@ -140,7 +146,7 @@ where option should be:
 
 B. Testing the configuration of a daily backup, via URI binding, with 2-copy redundancy retention:
 
-```
+```text
 MDBCK_BACKUPDIR="/opt/backup/mongo"
          MDBCK_DBUSERNAME="admin"
          MDBCK_DBPASSWORD="password"
@@ -171,19 +177,18 @@ Starting procedure at 2023.05.15 18:27:03
 
 I: Checking parameters...
 I: The path "/backup/mongo/backup" will be a regular directory. It could be better to use a dedicated mount point for the MDBCK_BACKUPDIR parameter.
-		I: MDBCK_DBURI is valorized (with 3 of 3 member(s)): "dblab01:27017,dblab01:27018,dblab02:27020". It will be used rather then MDBCK_DBHOST (for highest priority).
-		I: The MDBCK_REPLICAONSLAVE parameter is enabled. Secondary node identified: "dblab01:27017".
-		I: The daily backup has a redundancy retention of 2 copies.
-		I: All is ok.
-		
-		Procedure completed at 2023.05.15 18:27:04
-		======================================================================
-```
+I: MDBCK_DBURI is valorized (with 3 of 3 member(s)): "dblab01:27017,dblab01:27018,dblab02:27020". It will be used ratherthen MDBCK_DBHOST (for highest priority).
+I: The MDBCK_REPLICAONSLAVE parameter is enabled. Secondary node identified: "dblab01:27017".
+I: The daily backup has a redundancy retention of 2 copies.
+I: All is ok.
 
+Procedure completed at 2023.05.15 18:27:04
+======================================================================
+```
 
 C. Backup execution with configuration from step B:
 
-```
+```text
 $> /opt/backup/mongo/scripts/mdb_backup.sh
 
 Loading parameters... done.
@@ -252,10 +257,10 @@ Size  - Path
 
 D. Configuration testing for daily and weekly backup, connecting to a URI, with time-window retention set to 2 for both the backup modes:
 
-```
-MDBCK_BACKUPDIR="/opt/backup/mongo"		
-MDBCK_DBUSERNAME="admin"			
-MDBCK_DBPASSWORD="password"			
+```text
+MDBCK_BACKUPDIR="/opt/backup/mongo"
+MDBCK_DBUSERNAME="admin"
+MDBCK_DBPASSWORD="password"
 MDBCK_DBAUTHDB="admin"
 MDBCK_DBHOST="dblab01.domain.loc"
 MDBCK_DBPORT=""
@@ -281,7 +286,7 @@ MDBCK_REQUIREMDBCK_DBAUTHDB="yes"
 
 If the script is run on the same day set in MDBCK_WEEKLYDAY=1 parameter, i.e. Monday, there would be a weekly backup:
 
-```
+```text
 $> /opt/backup/mongo/scripts/mdb_backup.sh --test
 Loading parameters...done.
 =================================================== ====================
@@ -299,7 +304,7 @@ I: All is ok.
 
 If instead MDBCK_WEEKLYDAY were 6 (Saturday), you would have a daily backup:
 
-```
+```text
 $> /opt/backup/mongo/scripts/mdb_backup.sh --test
 Loading parameters...done.
 =================================================== ====================
@@ -318,10 +323,9 @@ Procedure completed at 2023.05.15 18:47:25
 =================================================== ====================
 ```
 
-
 E. Performing a daily backup with time-window retention:
 
-```
+```text
 $> /opt/backup/mongo/scripts/mdb_backup.sh
 Loading parameters...done.
 =================================================== ====================
@@ -356,45 +360,45 @@ Parameters..................................: Internal.
 Connecting to.................................: mongodb://admin:******** @dblab01:27017,dblab01:27018,dblab02:27020/?authSource=admin
 Backup type.............................................: Full
 Backup frequency & retention..................: Daily (Retention: delete backup older than 2 day(s))
-		Including oplogs..............................: Yes
-		Purge of backup destination...................: Yes
-		Try to connect to secondary node directly.....: Yes
-		Mongodump compression.........................: Yes
-		AutoMongoBackup compression...................: Tar and gzip
-		Link to latest backup.........................: Yes
-		Hardlink or copy to latest....................: Hard link
-		Clean up dump destination.....................: Yes
-		---
-		Backup home path..............................: /backup/mongo/backup
-		Mongodump destination.........................: /backup/mongo/backup/daily/dblab01-20230515-18h50m.monday.tgz
-		Logging AutoMongoBackup info to...............: /backup/mongo/backup/log/dblab01-20230515-18h50m.monday.log
-		Logging mongodump to..........................: /backup/mongo/backup/log/dblab01-20230515-18h50m.monday.mdb.log
-		---
-    	
-    	
-		Backup of Mongo databases 
-		======================================================================
-		Backup started - lun 15 mag 2023, 18.50.59, CEST
-		======================================================================
-		2023.05.15 18:50:59 - I: Checking disk space... It's ok.
-		2023.05.15 18:51:46 - I: Tar and gzip of "dblab01-20230515-18h50m.monday.tgz"... Done.
-		2023.05.15 18:51:52 - I: Setting the right owner and permissions to "dblab01-20230515-18h50m.monday.tgz"... Done.
-		2023.05.15 18:51:52 - I: Setting the right owner and permissions to "/backup/mongo/backup/daily/dblab01-20230515-18h50m.monday"... Done.
-		2023.05.15 18:51:52 - I: Cleaning the dump destination... Done.
-		2023.05.15 18:51:53 - I: Retention check... 1 obsolete backup found.
-		2023.05.15 18:51:53 - I: Deleting old backup(s) and log(s)...
-		"/backup/mongo/backup/daily/dblab01-20230313-17h44m.monday.tgz" deleted
-		"/backup/mongo/backup/log/dblab01-20230313-16h58m.monday.mdb.log" deleted
-		"/backup/mongo/backup/log/dblab01-20230313-17h36m.monday.mdb.log" deleted
-		"/backup/mongo/backup/log/dblab01-20230313-17h44m.monday.log" deleted
-		"/backup/mongo/backup/log/dblab01-20230313-17h44m.monday.mdb.log" deleted
-		======================================================================
-		Backup finished successfully - lun 15 mag 2023, 18.51.53, CEST
-		======================================================================
-    	
-		* Backup space usage *
-    	
-		Size  - Path
-		264M	/backup/mongo/backup/daily
-		=====================================================================
+Including oplogs..............................: Yes
+Purge of backup destination...................: Yes
+Try to connect to secondary node directly.....: Yes
+Mongodump compression.........................: Yes
+AutoMongoBackup compression...................: Tar and gzip
+Link to latest backup.........................: Yes
+Hardlink or copy to latest....................: Hard link
+Clean up dump destination.....................: Yes
+---
+Backup home path..............................: /backup/mongo/backup
+Mongodump destination.........................: /backup/mongo/backup/daily/dblab01-20230515-18h50m.monday.tgz
+Logging AutoMongoBackup info to...............: /backup/mongo/backup/log/dblab01-20230515-18h50m.monday.log
+Logging mongodump to..........................: /backup/mongo/backup/log/dblab01-20230515-18h50m.monday.mdb.log
+---
+
+
+Backup of Mongo databases 
+======================================================================
+Backup started - lun 15 mag 2023, 18.50.59, CEST
+======================================================================
+2023.05.15 18:50:59 - I: Checking disk space... It's ok.
+2023.05.15 18:51:46 - I: Tar and gzip of "dblab01-20230515-18h50m.monday.tgz"... Done.
+2023.05.15 18:51:52 - I: Setting the right owner and permissions to "dblab01-20230515-18h50m.monday.tgz"... Done.
+2023.05.15 18:51:52 - I: Setting the right owner and permissions to "/backup/mongo/backup/daily/dblab01-20230515-18h50mmonday"... Done.
+2023.05.15 18:51:52 - I: Cleaning the dump destination... Done.
+2023.05.15 18:51:53 - I: Retention check... 1 obsolete backup found.
+2023.05.15 18:51:53 - I: Deleting old backup(s) and log(s)...
+"/backup/mongo/backup/daily/dblab01-20230313-17h44m.monday.tgz" deleted
+"/backup/mongo/backup/log/dblab01-20230313-16h58m.monday.mdb.log" deleted
+"/backup/mongo/backup/log/dblab01-20230313-17h36m.monday.mdb.log" deleted
+"/backup/mongo/backup/log/dblab01-20230313-17h44m.monday.log" deleted
+"/backup/mongo/backup/log/dblab01-20230313-17h44m.monday.mdb.log" deleted
+======================================================================
+Backup finished successfully - lun 15 mag 2023, 18.51.53, CEST
+======================================================================
+
+* Backup space usage *
+
+Size  - Path
+264M	/backup/mongo/backup/daily
+=====================================================================
 ```
