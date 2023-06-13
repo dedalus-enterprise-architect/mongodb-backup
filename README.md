@@ -148,25 +148,25 @@ B. Testing the configuration of a daily backup, via URI binding, with 2-copy red
 
 ```text
 MDBCK_BACKUPDIR="/opt/backup/mongo"
-         MDBCK_DBUSERNAME="admin"
-         MDBCK_DBPASSWORD="password"
-         MDBCK_DBAUTHDB="admin"
-         MDBCK_DBHOST="dblab01.domain.loc"
-         MDBCK_DBPORT=""
-         MDBCK_DODAILY="yes"
-         MDBCK_DAILYRETENTION_TYPE="redundancy"
-         MDBCK_DAILYRETENTION=2
+MDBCK_DBUSERNAME="admin"
+MDBCK_DBPASSWORD="password"
+MDBCK_DBAUTHDB="admin"
+MDBCK_DBHOST="dblab01.domain.loc"
+MDBCK_DBPORT=""
+MDBCK_DODAILY="yes"
+MDBCK_DAILYRETENTION_TYPE="redundancy"
+MDBCK_DAILYRETENTION=2
 MDBCK_DBURI="dblab01:27017,dblab01:27018,dblab02:27020"
 MDBCK_DBPORT_TRY_DEFAULT="yes"
 MDBCK_COMP="gzip"
-         MDBCK_CLEANUP="yes"
-         MDBCK_LATEST="yes"
+MDBCK_CLEANUP="yes"
+MDBCK_LATEST="yes"
 MDBCK_LATESTLINK="yes"
 MDBCK_MONGOCOMP="yes"
 MDBCK_OPLOG="yes"
-         MDBCK_PURGE_BCKDIR_SPACE="yes"
+MDBCK_PURGE_BCKDIR_SPACE="yes"
 MDBCK_REPLICAONSLAVE="yes"
-         MDBCK_REQUIREMDBCK_DBAUTHDB="yes"
+MDBCK_REQUIREMDBCK_DBAUTHDB="yes"
 
 $> /opt/backup/mongo/scripts/mdb_backup.sh --test
 Loading parameters...done.
